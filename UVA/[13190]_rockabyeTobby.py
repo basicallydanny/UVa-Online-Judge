@@ -15,6 +15,16 @@ Input:
 Output: The first k medications Tobby needs to take.
 
 """
+
+def processMed(t, m, medications):
+    heapq.heapify(medications)
+    ans = []
+    for _ in range(m):
+        nextTime, order, name, frequency = heapq.heappop(medications)
+        ans.append(f"{nextTime} {name}")
+        heapq.heappush(medications, (nextTime + frequency, order, name, frequency))
+    return ans
+
 def main():
     cases = int(stdin.readline())
     for _ in range(cases):
@@ -27,11 +37,9 @@ def main():
             frequency = int(med[1])
             nextTime = frequency
             medications.append((nextTime, i, name, frequency))
-        heapq.heapify(medications)
-        for _ in range(m):
-            nextTime, order, name, frequency = heapq.heappop(medications)
-            print(f"{nextTime} {name}")
-            heapq.heappush(medications, (nextTime + frequency, order, name, frequency))
+        ans = processMed(t, m, medications)
+        for line in ans:
+            print(line)
 
 if __name__ == "__main__":
     main()
